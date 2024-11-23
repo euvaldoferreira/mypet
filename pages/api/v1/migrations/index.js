@@ -22,7 +22,7 @@ export default async function migrations(request, response) {
     };
     if (request.method === "GET") {
       const pendingMigrations = await migrationRunner(defaultMigrationOptions);
-      await response.status(200).json(pendingMigrations);
+      return response.status(200).json(pendingMigrations);
     }
     if (request.method === "POST") {
       const migratedMigrations = await migrationRunner({
@@ -30,13 +30,13 @@ export default async function migrations(request, response) {
         dryRun: false,
       });
       if (migratedMigrations.length > 0) {
-        response.status(201).json(migratedMigrations);
+        return response.status(201).json(migratedMigrations);
       }
-      response.status(200).json(migratedMigrations);
+      return response.status(200).json(migratedMigrations);
     }
   } catch (error) {
     console.error(error);
-    return response.status(500).json({ error: "Something went wrong" });
+    throw error;
   } finally {
     if (dbClient) {
       await dbClient.end();

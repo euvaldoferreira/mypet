@@ -16,6 +16,7 @@ async function query(queryObject) {
 
 function getSSLValues() {
   if (process.env.POSTGRES_CA) {
+    // eslint-disable-next-line no-unused-labels
     ca: process.env.POSTGRES_CA;
   }
   return process.env.NODE_ENV === "production" ? true : false;
@@ -34,8 +35,8 @@ async function getNewClient() {
   await client.connect();
   return client;
 }
-
-export default {
+const database = {
   query,
   getNewClient,
 };
+export default database;

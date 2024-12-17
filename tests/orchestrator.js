@@ -1,3 +1,4 @@
+import database from "infra/database.js";
 import retry from "async-retry";
 async function waitForAllServices() {
   await awaitForWebServer();
@@ -17,7 +18,11 @@ async function waitForAllServices() {
     }
   }
 }
+async function clearDatabase() {
+  await database.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
+}
 const orquestrador = {
   waitForAllServices,
+  clearDatabase,
 };
 export default orquestrador;

@@ -25,8 +25,8 @@ describe("PATCH /api/v1/users/[username]", () => {
 
       expect(responseBody).toEqual({
         name: "NotFoundError",
-        message: "O username informado não foi encontrado no sistema.",
-        action: "Verifique se o username está digitado corretamente.",
+        message: "User not found.",
+        action: "Try another username.",
         status_code: 404,
       });
     });
@@ -56,8 +56,8 @@ describe("PATCH /api/v1/users/[username]", () => {
 
       expect(responseBody).toEqual({
         name: "ValidationError",
-        message: "O username informado já está sendo utilizado.",
-        action: "Utilize outro username para realizar esta operação.",
+        message: "This username is already in use.",
+        action: "Try another username.",
         status_code: 400,
       });
     });
@@ -90,8 +90,8 @@ describe("PATCH /api/v1/users/[username]", () => {
 
       expect(responseBody).toEqual({
         name: "ValidationError",
-        message: "O email informado já está sendo utilizado.",
-        action: "Utilize outro email para realizar esta operação.",
+        message: "This email is already in use.",
+        action: "Try another email.",
         status_code: 400,
       });
     });
@@ -206,7 +206,7 @@ describe("PATCH /api/v1/users/[username]", () => {
 
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
 
-      const userInDatabase = await user.findOneByUsername(createdUser.username);
+      const userInDatabase = await user.findOnebyUsername(createdUser.username);
       const correctPasswordMatch = await password.compare(
         "newPassword2",
         userInDatabase.password,
